@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:8.4
+        container_name: mysql
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ./mysql-data:/var/lib/mysql
+            - ./mysql-backup:/opt/backup
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        logging:
+            options:
+                max-size: '10m'
+        command:
+            - --event_scheduler=ON
