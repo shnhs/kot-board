@@ -11,8 +11,8 @@ class Post(
     title: String,
     content: String,
 ) : BaseEntity(
-    createdBy = createdBy,
-) {
+        createdBy = createdBy,
+    ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
