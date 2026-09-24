@@ -5,6 +5,8 @@ import dev.shnhs.kotboard.controller.dto.PostDetailResponse
 import dev.shnhs.kotboard.controller.dto.PostListResponse
 import dev.shnhs.kotboard.controller.dto.PostSearchRequest
 import dev.shnhs.kotboard.controller.dto.PostUpdateRequest
+import dev.shnhs.kotboard.controller.dto.toDto
+import dev.shnhs.kotboard.service.PostService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PagedModel
@@ -19,11 +21,13 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
-class PostController {
+class PostController(
+    private val postService: PostService,
+) {
     @PostMapping("/posts")
     fun createPost(
         @RequestBody postCreateRequest: PostCreateRequest,
-    ): Long = 1L
+    ): Long = postService.createPost(postCreateRequest.toDto())
 
     @GetMapping("/posts/{id}")
     fun getPost(
@@ -47,11 +51,11 @@ class PostController {
     fun updatePost(
         @PathVariable id: Long,
         @RequestBody postUpdateRequest: PostUpdateRequest,
-    ): Long = id
+    ): Long = postService.updatePost(id, postUpdateRequest.toDto())
 
     @DeleteMapping("/posts/{id}")
     fun deletePost(
         @PathVariable id: Long,
         @RequestParam createdBy: String,
-    ): Long = id
+    ): Long = postService.deletePost(id, createdBy)
 }
